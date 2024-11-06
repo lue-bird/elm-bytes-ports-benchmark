@@ -53,11 +53,11 @@ function stringToBytes(str) {
  * @returns {number[]}
  */
 function bytesToString(bytes) {
-  let result = "";
+  let result = new Array(bytes.length);
   bytes.forEach((byte) => {
-    result += String.fromCharCode(byte)
+    result.push(String.fromCharCode(byte))
   });
-  return result;
+  return result.join();
 }
 
 
