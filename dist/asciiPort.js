@@ -53,7 +53,6 @@ function stringToBytes(str) {
  * @returns {number[]}
  */
 function bytesToString(bytes) {
-  // new TextDecoder("ascii").decode(bytes) is ever so slightly slower
   let result = "";
   bytes.forEach((byte) => {
     result += String.fromCharCode(byte)
