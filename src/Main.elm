@@ -1,5 +1,6 @@
 port module Main exposing (..)
 
+import AsciiPort
 import Base64Port
 import FilePort
 import HexPort
@@ -26,6 +27,7 @@ type Msg
     | IntListChunkingPortMsg IntListChunkingPort.Msg
     | Base64PortMsg Base64Port.Msg
     | HexPortMsg HexPort.Msg
+    | AsciiPortMsg AsciiPort.Msg
     | HttpTaskMsg HttpTask.Msg
 
 
@@ -54,6 +56,9 @@ update msg model =
         HexPortMsg smsg ->
             HexPort.update smsg model |> supdate HexPortMsg
 
+        AsciiPortMsg smsg ->
+            AsciiPort.update smsg model |> supdate AsciiPortMsg
+
         Base64PortMsg smsg ->
             Base64Port.update smsg model |> supdate Base64PortMsg
 
@@ -70,6 +75,7 @@ subscriptions model =
         , IntListPort.subscriptions model |> Sub.map IntListPortMsg
         , IntArrayPort.subscriptions model |> Sub.map IntArrayPortMsg
         , HexPort.subscriptions model |> Sub.map HexPortMsg
+        , AsciiPort.subscriptions model |> Sub.map AsciiPortMsg
         , Base64Port.subscriptions model |> Sub.map Base64PortMsg
         , HttpTask.subscriptions model |> Sub.map HttpTaskMsg
         ]

@@ -1,5 +1,6 @@
 import base64Port from "./base64Port.js";
 import hexPort from "./hexPort.js";
+import asciiPort from "./asciiPort.js";
 import filePort from "./filePort.js";
 import "./httpTask.js";
 import httpTask from "./httpTask.js";
@@ -13,6 +14,7 @@ const senders = [
   ["intList", intList.send, "rgb(0, 255, 0)"],
   ["intListChunking", intListChunking.send, "rgb(0, 120, 120)"],
   ["base64", base64Port.send, "rgb(0, 0, 255)"],
+  ["ascii", asciiPort.send, "rgb(255, 0, 255)"],
   ["hex", hexPort.send, "rgb(120, 0, 120)"],
   ["identity", identity.send, "rgb(120, 120, 120)"],
   ["filePort", filePort.send, "rgb(0, 0, 0)"],
@@ -23,6 +25,7 @@ const receivers = [
   ["intArray", intArray.receive, "rgb(255, 0, 0)"],
   ["intListChunking", intListChunking.receive, "rgb(0, 120, 120)"],
   ["base64", base64Port.receive, "rgb(0, 0, 255)"],
+  ["ascii", asciiPort.receive, "rgb(255, 0, 255)"],
   ["hex", hexPort.receive, "rgb(120, 0, 120)"],
   ["identity", identity.receive, "rgb(120, 120, 120)"],
   ["httpTask", httpTask.receive, "rgb(255, 255, 0)"],
