@@ -212,24 +212,15 @@ decoder width =
 
 loopHelp : { remaining : Int, string : String } -> Decode.Decoder (Decode.Step { remaining : Int, string : String } String)
 loopHelp { remaining, string } =
-    if remaining >= 16 then
-        Decode.map5
-            (\a b c d e ->
+    if remaining >= 4 then
+        Decode.map
+            (\chunk ->
                 Decode.Loop
-                    { remaining = remaining - 16
+                    { remaining = remaining - 4
                     , string =
-                        string
-                            ++ unsignedInt32ToHex a
-                            ++ unsignedInt32ToHex b
-                            ++ unsignedInt32ToHex c
-                            ++ unsignedInt32ToHex d
-                            ++ unsignedInt32ToHex e
+                        string ++ unsignedInt32ToHex chunk
                     }
             )
-            decodeUnsignedInt32BE
-            decodeUnsignedInt32BE
-            decodeUnsignedInt32BE
-            decodeUnsignedInt32BE
             decodeUnsignedInt32BE
 
     else if remaining == 0 then
