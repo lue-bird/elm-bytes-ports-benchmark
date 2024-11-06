@@ -41,7 +41,7 @@ async function send(bytes) {
  */
 function stringToBytes(str) {
   const result = new Uint8Array(str.length);
-  for (let i = 0; i < result.length; i++) {
+  for (let i = 0; i < str.length; i++) {
     result[i] = str.charCodeAt(i)
   }
   return result;
@@ -53,11 +53,11 @@ function stringToBytes(str) {
  * @returns {number[]}
  */
 function bytesToString(bytes) {
-  let result = new Array(bytes.length);
-  bytes.forEach((byte) => {
-    result.push(String.fromCharCode(byte))
-  });
-  return result.join();
+  let result = ""
+  for (let i = 0; i < bytes.length; i++) {
+    result += String.fromCharCode(bytes[i])
+  }
+  return result
 }
 
 
