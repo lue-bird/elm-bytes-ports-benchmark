@@ -600,11 +600,11 @@ function _Debug_crash_UNUSED(identifier, fact1, fact2, fact3, fact4)
 
 function _Debug_regionToString(region)
 {
-	if (region.J.y === region.P.y)
+	if (region.au.Y === region.aI.Y)
 	{
-		return 'on line ' + region.J.y;
+		return 'on line ' + region.au.Y;
 	}
-	return 'on lines ' + region.J.y + ' through ' + region.P.y;
+	return 'on lines ' + region.au.Y + ' through ' + region.aI.Y;
 }
 
 
@@ -2035,9 +2035,9 @@ var _Platform_worker = F4(function(impl, flagDecoder, debugMetadata, args)
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.aF,
-		impl.aT,
-		impl.aQ,
+		impl.bR,
+		impl.co,
+		impl.ci,
 		function() { return function() {} }
 	);
 });
@@ -2759,25 +2759,25 @@ var _Http_toTask = F3(function(router, toTask, request)
 	return _Scheduler_binding(function(callback)
 	{
 		function done(response) {
-			callback(toTask(request.R.a(response)));
+			callback(toTask(request.aK.a(response)));
 		}
 
 		var xhr = new XMLHttpRequest();
 		xhr.addEventListener('error', function() { done($elm$http$Http$NetworkError_); });
 		xhr.addEventListener('timeout', function() { done($elm$http$Http$Timeout_); });
-		xhr.addEventListener('load', function() { done(_Http_toResponse(request.R.b, xhr)); });
-		$elm$core$Maybe$isJust(request.an) && _Http_track(router, xhr, request.an.a);
+		xhr.addEventListener('load', function() { done(_Http_toResponse(request.aK.b, xhr)); });
+		$elm$core$Maybe$isJust(request.bl) && _Http_track(router, xhr, request.bl.a);
 
 		try {
-			xhr.open(request.aG, request.ao, true);
+			xhr.open(request.bV, request.bm, true);
 		} catch (e) {
-			return done($elm$http$Http$BadUrl_(request.ao));
+			return done($elm$http$Http$BadUrl_(request.bm));
 		}
 
 		_Http_configureRequest(xhr, request);
 
-		request.ay.a && xhr.setRequestHeader('Content-Type', request.ay.a);
-		xhr.send(request.ay.b);
+		request.bA.a && xhr.setRequestHeader('Content-Type', request.bA.a);
+		xhr.send(request.bA.b);
 
 		return function() { xhr.c = true; xhr.abort(); };
 	});
@@ -2788,13 +2788,13 @@ var _Http_toTask = F3(function(router, toTask, request)
 
 function _Http_configureRequest(xhr, request)
 {
-	for (var headers = request.T; headers.b; headers = headers.b) // WHILE_CONS
+	for (var headers = request.aP; headers.b; headers = headers.b) // WHILE_CONS
 	{
 		xhr.setRequestHeader(headers.a.a, headers.a.b);
 	}
-	xhr.timeout = request.aR.a || 0;
-	xhr.responseType = request.R.d;
-	xhr.withCredentials = request.aw;
+	xhr.timeout = request.cl.a || 0;
+	xhr.responseType = request.aK.d;
+	xhr.withCredentials = request.bw;
 }
 
 
@@ -2815,10 +2815,10 @@ function _Http_toResponse(toBody, xhr)
 function _Http_toMetadata(xhr)
 {
 	return {
-		ao: xhr.responseURL,
-		aO: xhr.status,
-		aP: xhr.statusText,
-		T: _Http_parseHeaders(xhr.getAllResponseHeaders())
+		bm: xhr.responseURL,
+		cg: xhr.status,
+		ch: xhr.statusText,
+		aP: _Http_parseHeaders(xhr.getAllResponseHeaders())
 	};
 }
 
@@ -2913,15 +2913,15 @@ function _Http_track(router, xhr, tracker)
 	xhr.upload.addEventListener('progress', function(event) {
 		if (xhr.c) { return; }
 		_Scheduler_rawSpawn(A2($elm$core$Platform$sendToSelf, router, _Utils_Tuple2(tracker, $elm$http$Http$Sending({
-			aN: event.loaded,
-			ak: event.total
+			cf: event.loaded,
+			be: event.total
 		}))));
 	});
 	xhr.addEventListener('progress', function(event) {
 		if (xhr.c) { return; }
 		_Scheduler_rawSpawn(A2($elm$core$Platform$sendToSelf, router, _Utils_Tuple2(tracker, $elm$http$Http$Receiving({
-			aL: event.loaded,
-			ak: event.lengthComputable ? $elm$core$Maybe$Just(event.total) : $elm$core$Maybe$Nothing
+			b9: event.loaded,
+			be: event.lengthComputable ? $elm$core$Maybe$Just(event.total) : $elm$core$Maybe$Nothing
 		}))));
 	});
 }var $elm$core$Basics$EQ = 1;
@@ -3453,25 +3453,25 @@ var $elm$core$Array$treeFromBuilder = F2(
 	});
 var $elm$core$Array$builderToArray = F2(
 	function (reverseNodeList, builder) {
-		if (!builder.a) {
+		if (!builder.f) {
 			return A4(
 				$elm$core$Array$Array_elm_builtin,
-				$elm$core$Elm$JsArray$length(builder.c),
+				$elm$core$Elm$JsArray$length(builder.i),
 				$elm$core$Array$shiftStep,
 				$elm$core$Elm$JsArray$empty,
-				builder.c);
+				builder.i);
 		} else {
-			var treeLen = builder.a * $elm$core$Array$branchFactor;
+			var treeLen = builder.f * $elm$core$Array$branchFactor;
 			var depth = $elm$core$Basics$floor(
 				A2($elm$core$Basics$logBase, $elm$core$Array$branchFactor, treeLen - 1));
-			var correctNodeList = reverseNodeList ? $elm$core$List$reverse(builder.d) : builder.d;
-			var tree = A2($elm$core$Array$treeFromBuilder, correctNodeList, builder.a);
+			var correctNodeList = reverseNodeList ? $elm$core$List$reverse(builder.j) : builder.j;
+			var tree = A2($elm$core$Array$treeFromBuilder, correctNodeList, builder.f);
 			return A4(
 				$elm$core$Array$Array_elm_builtin,
-				$elm$core$Elm$JsArray$length(builder.c) + treeLen,
+				$elm$core$Elm$JsArray$length(builder.i) + treeLen,
 				A2($elm$core$Basics$max, 5, depth * $elm$core$Array$shiftStep),
 				tree,
-				builder.c);
+				builder.i);
 		}
 	});
 var $elm$core$Basics$idiv = _Basics_idiv;
@@ -3484,7 +3484,7 @@ var $elm$core$Array$initializeHelp = F5(
 				return A2(
 					$elm$core$Array$builderToArray,
 					false,
-					{d: nodeList, a: (len / $elm$core$Array$branchFactor) | 0, c: tail});
+					{j: nodeList, f: (len / $elm$core$Array$branchFactor) | 0, i: tail});
 			} else {
 				var leaf = $elm$core$Array$Leaf(
 					A3($elm$core$Elm$JsArray$initialize, $elm$core$Array$branchFactor, fromIndex, fn));
@@ -3523,23 +3523,32 @@ var $elm$core$Result$isOk = function (result) {
 	}
 };
 var $elm$json$Json$Encode$null = _Json_encodeNull;
-var $author$project$Model$init = {M: $author$project$Util$noBytes, ap: $elm$json$Json$Encode$null};
+var $author$project$Model$init = {aC: $author$project$Util$noBytes, bn: $elm$json$Json$Encode$null};
 var $elm$core$Platform$Cmd$batch = _Platform_batch;
 var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
 var $author$project$Main$Base64PortMsg = function (a) {
-	return {$: 3, a: a};
+	return {$: 5, a: a};
 };
 var $author$project$Main$FilePortMsg = function (a) {
 	return {$: 1, a: a};
 };
+var $author$project$Main$HexPortMsg = function (a) {
+	return {$: 6, a: a};
+};
 var $author$project$Main$HttpTaskMsg = function (a) {
-	return {$: 4, a: a};
+	return {$: 7, a: a};
 };
 var $author$project$Main$IdentityMsg = function (a) {
 	return {$: 0, a: a};
 };
 var $author$project$Main$IntArrayPortMsg = function (a) {
 	return {$: 2, a: a};
+};
+var $author$project$Main$IntListChunkingPortMsg = function (a) {
+	return {$: 4, a: a};
+};
+var $author$project$Main$IntListPortMsg = function (a) {
+	return {$: 3, a: a};
 };
 var $elm$core$Platform$Sub$batch = _Platform_batch;
 var $elm$core$Platform$Sub$map = _Platform_map;
@@ -3832,6 +3841,151 @@ var $author$project$FilePort$subscriptions = function (_v0) {
 			$elm$json$Json$Decode$decodeValue($elm$file$File$decoder),
 			$author$project$FilePort$GotFile));
 };
+var $author$project$HexPort$GotBytes = function (a) {
+	return {$: 0, a: a};
+};
+var $author$project$HexPort$SendBytes = {$: 1};
+var $author$project$HexPort$hexCharToInt = function (hexChar) {
+	switch (hexChar) {
+		case '0':
+			return 0;
+		case '1':
+			return 1;
+		case '2':
+			return 2;
+		case '3':
+			return 3;
+		case '4':
+			return 4;
+		case '5':
+			return 5;
+		case '6':
+			return 6;
+		case '7':
+			return 7;
+		case '8':
+			return 8;
+		case '9':
+			return 9;
+		case 'A':
+			return 10;
+		case 'a':
+			return 10;
+		case 'B':
+			return 11;
+		case 'b':
+			return 11;
+		case 'C':
+			return 12;
+		case 'c':
+			return 12;
+		case 'D':
+			return 13;
+		case 'd':
+			return 13;
+		case 'E':
+			return 14;
+		case 'e':
+			return 14;
+		default:
+			return 15;
+	}
+};
+var $elm$bytes$Bytes$Encode$U32 = F2(
+	function (a, b) {
+		return {$: 5, a: a, b: b};
+	});
+var $elm$bytes$Bytes$Encode$unsignedInt32 = $elm$bytes$Bytes$Encode$U32;
+var $author$project$HexPort$encodeChunks = F2(
+	function (input, soFar) {
+		encodeChunks:
+		while (true) {
+			var _v0 = $elm$core$String$toList(
+				A2($elm$core$String$left, 8, input));
+			if (_v0.b) {
+				if (_v0.b.b) {
+					if ((((((_v0.b.b.b && _v0.b.b.b.b) && _v0.b.b.b.b.b) && _v0.b.b.b.b.b.b) && _v0.b.b.b.b.b.b.b) && _v0.b.b.b.b.b.b.b.b) && (!_v0.b.b.b.b.b.b.b.b.b)) {
+						var a = _v0.a;
+						var _v1 = _v0.b;
+						var b = _v1.a;
+						var _v2 = _v1.b;
+						var c = _v2.a;
+						var _v3 = _v2.b;
+						var d = _v3.a;
+						var _v4 = _v3.b;
+						var e = _v4.a;
+						var _v5 = _v4.b;
+						var f = _v5.a;
+						var _v6 = _v5.b;
+						var g = _v6.a;
+						var _v7 = _v6.b;
+						var h = _v7.a;
+						var $temp$input = A2($elm$core$String$dropLeft, 8, input),
+							$temp$soFar = A2(
+							$elm$core$List$cons,
+							A2(
+								$elm$bytes$Bytes$Encode$unsignedInt32,
+								1,
+								((($author$project$HexPort$hexCharToInt(a) << 28) | ($author$project$HexPort$hexCharToInt(b) << 24)) | (($author$project$HexPort$hexCharToInt(c) << 20) | ($author$project$HexPort$hexCharToInt(d) << 16))) | ((($author$project$HexPort$hexCharToInt(e) << 12) | ($author$project$HexPort$hexCharToInt(f) << 8)) | (($author$project$HexPort$hexCharToInt(g) << 4) | $author$project$HexPort$hexCharToInt(h)))),
+							soFar);
+						input = $temp$input;
+						soFar = $temp$soFar;
+						continue encodeChunks;
+					} else {
+						var a = _v0.a;
+						var _v8 = _v0.b;
+						var b = _v8.a;
+						var cUp = _v8.b;
+						var $temp$input = A2($elm$core$String$dropLeft, 2, input),
+							$temp$soFar = A2(
+							$elm$core$List$cons,
+							$elm$bytes$Bytes$Encode$unsignedInt8(
+								($author$project$HexPort$hexCharToInt(a) << 4) | $author$project$HexPort$hexCharToInt(b)),
+							soFar);
+						input = $temp$input;
+						soFar = $temp$soFar;
+						continue encodeChunks;
+					}
+				} else {
+					return soFar;
+				}
+			} else {
+				return soFar;
+			}
+		}
+	});
+var $author$project$HexPort$encoder = function (string) {
+	return $elm$bytes$Bytes$Encode$sequence(
+		$elm$core$List$reverse(
+			A2($author$project$HexPort$encodeChunks, string, _List_Nil)));
+};
+var $author$project$HexPort$toBytes = function (string) {
+	return $elm$bytes$Bytes$Encode$encode(
+		$author$project$HexPort$encoder(string));
+};
+var $author$project$HexPort$bytesDecoder = A2($elm$json$Json$Decode$map, $author$project$HexPort$toBytes, $elm$json$Json$Decode$string);
+var $author$project$HexPort$hexFromJS = _Platform_incomingPort('hexFromJS', $elm$json$Json$Decode$value);
+var $author$project$HexPort$hexTriggerSend = _Platform_incomingPort(
+	'hexTriggerSend',
+	$elm$json$Json$Decode$null(0));
+var $author$project$HexPort$subscriptions = function (_v0) {
+	return $elm$core$Platform$Sub$batch(
+		_List_fromArray(
+			[
+				$author$project$HexPort$hexFromJS(
+				A2(
+					$elm$core$Basics$composeR,
+					$elm$json$Json$Decode$decodeValue($author$project$HexPort$bytesDecoder),
+					A2(
+						$elm$core$Basics$composeR,
+						$elm$core$Result$withDefault($author$project$Util$noBytes),
+						$author$project$HexPort$GotBytes))),
+				$author$project$HexPort$hexTriggerSend(
+				function (_v1) {
+					return $author$project$HexPort$SendBytes;
+				})
+			]));
+};
 var $author$project$HttpTask$GetBytes = {$: 1};
 var $author$project$HttpTask$PostBytes = {$: 0};
 var $author$project$HttpTask$httpTriggerGet = _Platform_incomingPort(
@@ -3977,6 +4131,114 @@ var $author$project$IntArrayPort$subscriptions = function (_v0) {
 				})
 			]));
 };
+var $author$project$IntListChunkingPort$GotBytes = function (a) {
+	return {$: 0, a: a};
+};
+var $author$project$IntListChunkingPort$SendBytes = {$: 1};
+var $elm$bytes$Bytes$Encode$I16 = F2(
+	function (a, b) {
+		return {$: 1, a: a, b: b};
+	});
+var $elm$bytes$Bytes$Encode$signedInt16 = $elm$bytes$Bytes$Encode$I16;
+var $author$project$IntListChunkingPort$unsignedInt8ListToChunkedBytesList = F2(
+	function (soFar, unsignedInt8List) {
+		unsignedInt8ListToChunkedBytesList:
+		while (true) {
+			if (unsignedInt8List.b) {
+				if (unsignedInt8List.b.b) {
+					var b0 = unsignedInt8List.a;
+					var _v1 = unsignedInt8List.b;
+					var b1 = _v1.a;
+					var b2Up = _v1.b;
+					var $temp$soFar = A2(
+						$elm$core$List$cons,
+						A2($elm$bytes$Bytes$Encode$signedInt16, 0, (b1 << 8) | b0),
+						soFar),
+						$temp$unsignedInt8List = b2Up;
+					soFar = $temp$soFar;
+					unsignedInt8List = $temp$unsignedInt8List;
+					continue unsignedInt8ListToChunkedBytesList;
+				} else {
+					var b0 = unsignedInt8List.a;
+					var b1Up = unsignedInt8List.b;
+					var $temp$soFar = A2(
+						$elm$core$List$cons,
+						$elm$bytes$Bytes$Encode$unsignedInt8(b0),
+						soFar),
+						$temp$unsignedInt8List = b1Up;
+					soFar = $temp$soFar;
+					unsignedInt8List = $temp$unsignedInt8List;
+					continue unsignedInt8ListToChunkedBytesList;
+				}
+			} else {
+				return $elm$core$List$reverse(soFar);
+			}
+		}
+	});
+var $author$project$IntListChunkingPort$bytesDecoder = A2(
+	$elm$json$Json$Decode$map,
+	function (unsignedInt8List) {
+		return $elm$bytes$Bytes$Encode$encode(
+			$elm$bytes$Bytes$Encode$sequence(
+				A2($author$project$IntListChunkingPort$unsignedInt8ListToChunkedBytesList, _List_Nil, unsignedInt8List)));
+	},
+	$elm$json$Json$Decode$list($elm$json$Json$Decode$int));
+var $author$project$IntListChunkingPort$intListChunkingFromJS = _Platform_incomingPort('intListChunkingFromJS', $elm$json$Json$Decode$value);
+var $author$project$IntListChunkingPort$intListChunkingTriggerSend = _Platform_incomingPort(
+	'intListChunkingTriggerSend',
+	$elm$json$Json$Decode$null(0));
+var $author$project$IntListChunkingPort$subscriptions = function (_v0) {
+	return $elm$core$Platform$Sub$batch(
+		_List_fromArray(
+			[
+				$author$project$IntListChunkingPort$intListChunkingFromJS(
+				function (json) {
+					return $author$project$IntListChunkingPort$GotBytes(
+						A2(
+							$elm$core$Result$withDefault,
+							$author$project$Util$noBytes,
+							A2($elm$json$Json$Decode$decodeValue, $author$project$IntListChunkingPort$bytesDecoder, json)));
+				}),
+				$author$project$IntListChunkingPort$intListChunkingTriggerSend(
+				function (_v1) {
+					return $author$project$IntListChunkingPort$SendBytes;
+				})
+			]));
+};
+var $author$project$IntListPort$GotBytes = function (a) {
+	return {$: 0, a: a};
+};
+var $author$project$IntListPort$SendBytes = {$: 1};
+var $author$project$IntListPort$bytesDecoder = A2(
+	$elm$json$Json$Decode$map,
+	function (unsignedInt8List) {
+		return $elm$bytes$Bytes$Encode$encode(
+			$elm$bytes$Bytes$Encode$sequence(
+				A2($elm$core$List$map, $elm$bytes$Bytes$Encode$unsignedInt8, unsignedInt8List)));
+	},
+	$elm$json$Json$Decode$list($elm$json$Json$Decode$int));
+var $author$project$IntListPort$intListFromJS = _Platform_incomingPort('intListFromJS', $elm$json$Json$Decode$value);
+var $author$project$IntListPort$intListTriggerSend = _Platform_incomingPort(
+	'intListTriggerSend',
+	$elm$json$Json$Decode$null(0));
+var $author$project$IntListPort$subscriptions = function (_v0) {
+	return $elm$core$Platform$Sub$batch(
+		_List_fromArray(
+			[
+				$author$project$IntListPort$intListFromJS(
+				function (json) {
+					return $author$project$IntListPort$GotBytes(
+						A2(
+							$elm$core$Result$withDefault,
+							$author$project$Util$noBytes,
+							A2($elm$json$Json$Decode$decodeValue, $author$project$IntListPort$bytesDecoder, json)));
+				}),
+				$author$project$IntListPort$intListTriggerSend(
+				function (_v1) {
+					return $author$project$IntListPort$SendBytes;
+				})
+			]));
+};
 var $author$project$Main$subscriptions = function (model) {
 	return $elm$core$Platform$Sub$batch(
 		_List_fromArray(
@@ -3991,8 +4253,20 @@ var $author$project$Main$subscriptions = function (model) {
 				$author$project$FilePort$subscriptions(model)),
 				A2(
 				$elm$core$Platform$Sub$map,
+				$author$project$Main$IntListChunkingPortMsg,
+				$author$project$IntListChunkingPort$subscriptions(model)),
+				A2(
+				$elm$core$Platform$Sub$map,
+				$author$project$Main$IntListPortMsg,
+				$author$project$IntListPort$subscriptions(model)),
+				A2(
+				$elm$core$Platform$Sub$map,
 				$author$project$Main$IntArrayPortMsg,
 				$author$project$IntArrayPort$subscriptions(model)),
+				A2(
+				$elm$core$Platform$Sub$map,
+				$author$project$Main$HexPortMsg,
+				$author$project$HexPort$subscriptions(model)),
 				A2(
 				$elm$core$Platform$Sub$map,
 				$author$project$Main$Base64PortMsg,
@@ -4274,16 +4548,16 @@ var $elm$bytes$Bytes$Decode$succeed = function (a) {
 };
 var $elm$bytes$Bytes$Decode$unsignedInt8 = _Bytes_read_u8;
 var $danfishgold$base64_bytes$Decode$loopHelp = function (_v0) {
-	var remaining = _v0.D;
-	var string = _v0.E;
+	var remaining = _v0.af;
+	var string = _v0.aj;
 	if (remaining >= 18) {
 		return A2(
 			$elm$bytes$Bytes$Decode$map,
 			function (result) {
 				return $elm$bytes$Bytes$Decode$Loop(
 					{
-						D: remaining - 18,
-						E: _Utils_ap(string, result)
+						af: remaining - 18,
+						aj: _Utils_ap(string, result)
 					});
 			},
 			$danfishgold$base64_bytes$Decode$decode18Bytes);
@@ -4294,8 +4568,8 @@ var $danfishgold$base64_bytes$Decode$loopHelp = function (_v0) {
 					var combined = ((a << 16) | (b << 8)) | c;
 					return $elm$bytes$Bytes$Decode$Loop(
 						{
-							D: remaining - 3,
-							E: _Utils_ap(
+							af: remaining - 3,
+							aj: _Utils_ap(
 								string,
 								A2($danfishgold$base64_bytes$Decode$bitsToChars, combined, 0))
 						});
@@ -4334,7 +4608,7 @@ var $danfishgold$base64_bytes$Decode$loopHelp = function (_v0) {
 var $danfishgold$base64_bytes$Decode$decoder = function (width) {
 	return A2(
 		$elm$bytes$Bytes$Decode$loop,
-		{D: width, E: ''},
+		{af: width, aj: ''},
 		$danfishgold$base64_bytes$Decode$loopHelp);
 };
 var $elm$bytes$Bytes$width = _Bytes_width;
@@ -4363,14 +4637,14 @@ var $author$project$Base64Port$update = F2(
 			return _Utils_Tuple2(
 				_Utils_update(
 					model,
-					{M: bytes}),
+					{aC: bytes}),
 				$author$project$Ports$receivedBytes(
 					$elm$bytes$Bytes$width(bytes)));
 		} else {
 			return _Utils_Tuple2(
 				model,
 				$author$project$Base64Port$base64ToJS(
-					$author$project$Base64Port$bytesEncoder(model.M)));
+					$author$project$Base64Port$bytesEncoder(model.aC)));
 		}
 	});
 var $author$project$FilePort$GotBytes = function (a) {
@@ -4471,9 +4745,134 @@ var $author$project$FilePort$update = F2(
 			return _Utils_Tuple2(
 				_Utils_update(
 					model,
-					{M: bytes}),
+					{aC: bytes}),
 				$author$project$Ports$receivedBytes(
 					$elm$bytes$Bytes$width(bytes)));
+		}
+	});
+var $author$project$HexPort$decodeUnsignedInt32BE = $elm$bytes$Bytes$Decode$unsignedInt32(1);
+var $author$project$HexPort$unsignedInt4ToHexString = function (n) {
+	switch (n) {
+		case 0:
+			return '0';
+		case 1:
+			return '1';
+		case 2:
+			return '2';
+		case 3:
+			return '3';
+		case 4:
+			return '4';
+		case 5:
+			return '5';
+		case 6:
+			return '6';
+		case 7:
+			return '7';
+		case 8:
+			return '8';
+		case 9:
+			return '9';
+		case 10:
+			return 'A';
+		case 11:
+			return 'B';
+		case 12:
+			return 'C';
+		case 13:
+			return 'D';
+		case 14:
+			return 'E';
+		default:
+			return 'F';
+	}
+};
+var $author$project$HexPort$unsignedInt32ToHex = function (bits) {
+	return _Utils_ap(
+		$author$project$HexPort$unsignedInt4ToHexString((bits >>> 28) & 15),
+		_Utils_ap(
+			$author$project$HexPort$unsignedInt4ToHexString((bits >>> 24) & 15),
+			_Utils_ap(
+				$author$project$HexPort$unsignedInt4ToHexString((bits >>> 20) & 15),
+				_Utils_ap(
+					$author$project$HexPort$unsignedInt4ToHexString((bits >>> 16) & 15),
+					_Utils_ap(
+						$author$project$HexPort$unsignedInt4ToHexString((bits >>> 12) & 15),
+						_Utils_ap(
+							$author$project$HexPort$unsignedInt4ToHexString((bits >>> 8) & 15),
+							_Utils_ap(
+								$author$project$HexPort$unsignedInt4ToHexString((bits >>> 4) & 15),
+								$author$project$HexPort$unsignedInt4ToHexString(bits & 15))))))));
+};
+var $author$project$HexPort$unsignedInt8ToHexString = function (bits) {
+	return _Utils_ap(
+		$author$project$HexPort$unsignedInt4ToHexString((bits >>> 4) & 15),
+		$author$project$HexPort$unsignedInt4ToHexString(bits & 15));
+};
+var $author$project$HexPort$loopHelp = function (_v0) {
+	var remaining = _v0.af;
+	var string = _v0.aj;
+	return (remaining >= 4) ? A2(
+		$elm$bytes$Bytes$Decode$map,
+		function (a) {
+			return $elm$bytes$Bytes$Decode$Loop(
+				{
+					af: remaining - 4,
+					aj: _Utils_ap(
+						string,
+						$author$project$HexPort$unsignedInt32ToHex(a))
+				});
+		},
+		$author$project$HexPort$decodeUnsignedInt32BE) : ((!remaining) ? $elm$bytes$Bytes$Decode$succeed(
+		$elm$bytes$Bytes$Decode$Done(string)) : A2(
+		$elm$bytes$Bytes$Decode$map,
+		function (a) {
+			return $elm$bytes$Bytes$Decode$Loop(
+				{
+					af: remaining - 1,
+					aj: _Utils_ap(
+						string,
+						$author$project$HexPort$unsignedInt8ToHexString(a))
+				});
+		},
+		$elm$bytes$Bytes$Decode$unsignedInt8));
+};
+var $author$project$HexPort$decoder = function (width) {
+	return A2(
+		$elm$bytes$Bytes$Decode$loop,
+		{af: width, aj: ''},
+		$author$project$HexPort$loopHelp);
+};
+var $author$project$HexPort$fromBytes = function (bytes) {
+	return A2(
+		$elm$bytes$Bytes$Decode$decode,
+		$author$project$HexPort$decoder(
+			$elm$bytes$Bytes$width(bytes)),
+		bytes);
+};
+var $author$project$HexPort$bytesEncoder = function (bytes) {
+	return $elm$json$Json$Encode$string(
+		A2(
+			$elm$core$Maybe$withDefault,
+			'',
+			$author$project$HexPort$fromBytes(bytes)));
+};
+var $author$project$HexPort$hexToJS = _Platform_outgoingPort('hexToJS', $elm$core$Basics$identity);
+var $author$project$HexPort$update = F2(
+	function (msg, model) {
+		if (!msg.$) {
+			var bytes = msg.a;
+			return _Utils_Tuple2(
+				_Utils_update(
+					model,
+					{aC: bytes}),
+				$author$project$Ports$receivedBytes(
+					$elm$bytes$Bytes$width(bytes)));
+		} else {
+			return _Utils_Tuple2(
+				model,
+				$author$project$HexPort$hexToJS(
+					$author$project$HexPort$bytesEncoder(model.aC)));
 		}
 	});
 var $author$project$HttpTask$GotBytes = function (a) {
@@ -5035,7 +5434,7 @@ var $elm$http$Http$Request = function (a) {
 };
 var $elm$http$Http$State = F2(
 	function (reqs, subs) {
-		return {ag: reqs, al: subs};
+		return {a8: reqs, bi: subs};
 	});
 var $elm$http$Http$init = $elm$core$Task$succeed(
 	A2($elm$http$Http$State, $elm$core$Dict$empty, _List_Nil));
@@ -5079,7 +5478,7 @@ var $elm$http$Http$updateReqs = F3(
 					return A2(
 						$elm$core$Task$andThen,
 						function (pid) {
-							var _v4 = req.an;
+							var _v4 = req.bl;
 							if (_v4.$ === 1) {
 								return A3($elm$http$Http$updateReqs, router, otherCmds, reqs);
 							} else {
@@ -5109,7 +5508,7 @@ var $elm$http$Http$onEffects = F4(
 				return $elm$core$Task$succeed(
 					A2($elm$http$Http$State, reqs, subs));
 			},
-			A3($elm$http$Http$updateReqs, router, cmds, state.ag));
+			A3($elm$http$Http$updateReqs, router, cmds, state.a8));
 	});
 var $elm$core$List$maybeCons = F3(
 	function (f, mx, xs) {
@@ -5152,7 +5551,7 @@ var $elm$http$Http$onSelfMsg = F3(
 				A2(
 					$elm$core$List$filterMap,
 					A3($elm$http$Http$maybeSend, router, tracker, progress),
-					state.al)));
+					state.bi)));
 	});
 var $elm$http$Http$Cancel = function (a) {
 	return {$: 0, a: a};
@@ -5166,14 +5565,14 @@ var $elm$http$Http$cmdMap = F2(
 			var r = cmd.a;
 			return $elm$http$Http$Request(
 				{
-					aw: r.aw,
-					ay: r.ay,
-					R: A2(_Http_mapExpect, func, r.R),
-					T: r.T,
-					aG: r.aG,
-					aR: r.aR,
-					an: r.an,
-					ao: r.ao
+					bw: r.bw,
+					bA: r.bA,
+					aK: A2(_Http_mapExpect, func, r.aK),
+					aP: r.aP,
+					bV: r.bV,
+					cl: r.cl,
+					bl: r.bl,
+					bm: r.bm
 				});
 		}
 	});
@@ -5196,15 +5595,15 @@ var $elm$http$Http$subscription = _Platform_leaf('Http');
 var $elm$http$Http$request = function (r) {
 	return $elm$http$Http$command(
 		$elm$http$Http$Request(
-			{aw: false, ay: r.ay, R: r.R, T: r.T, aG: r.aG, aR: r.aR, an: r.an, ao: r.ao}));
+			{bw: false, bA: r.bA, aK: r.aK, aP: r.aP, bV: r.bV, cl: r.cl, bl: r.bl, bm: r.bm}));
 };
 var $elm$http$Http$get = function (r) {
 	return $elm$http$Http$request(
-		{ay: $elm$http$Http$emptyBody, R: r.R, T: _List_Nil, aG: 'GET', aR: $elm$core$Maybe$Nothing, an: $elm$core$Maybe$Nothing, ao: r.ao});
+		{bA: $elm$http$Http$emptyBody, aK: r.aK, aP: _List_Nil, bV: 'GET', cl: $elm$core$Maybe$Nothing, bl: $elm$core$Maybe$Nothing, bm: r.bm});
 };
 var $author$project$HttpTask$get = $elm$http$Http$get(
 	{
-		R: A2(
+		aK: A2(
 			$elm$http$Http$expectBytesResponse,
 			A2(
 				$elm$core$Basics$composeR,
@@ -5218,7 +5617,7 @@ var $author$project$HttpTask$get = $elm$http$Http$get(
 					return $elm$core$Result$Ok($author$project$Util$noBytes);
 				}
 			}),
-		ao: 'elm://get'
+		bm: 'elm://get'
 	});
 var $author$project$HttpTask$PostedBytes = function (a) {
 	return {$: 3, a: a};
@@ -5260,7 +5659,7 @@ var $elm$http$Http$resolve = F2(
 			case 3:
 				var metadata = response.a;
 				return $elm$core$Result$Err(
-					$elm$http$Http$BadStatus(metadata.aO));
+					$elm$http$Http$BadStatus(metadata.cg));
 			default:
 				var body = response.b;
 				return A2(
@@ -5280,14 +5679,14 @@ var $elm$http$Http$expectWhatever = function (toMsg) {
 };
 var $elm$http$Http$post = function (r) {
 	return $elm$http$Http$request(
-		{ay: r.ay, R: r.R, T: _List_Nil, aG: 'POST', aR: $elm$core$Maybe$Nothing, an: $elm$core$Maybe$Nothing, ao: r.ao});
+		{bA: r.bA, aK: r.aK, aP: _List_Nil, bV: 'POST', cl: $elm$core$Maybe$Nothing, bl: $elm$core$Maybe$Nothing, bm: r.bm});
 };
 var $author$project$HttpTask$post = function (bytes) {
 	return $elm$http$Http$post(
 		{
-			ay: A2($elm$http$Http$bytesBody, '', bytes),
-			R: $elm$http$Http$expectWhatever($author$project$HttpTask$PostedBytes),
-			ao: 'elm://post'
+			bA: A2($elm$http$Http$bytesBody, '', bytes),
+			aK: $elm$http$Http$expectWhatever($author$project$HttpTask$PostedBytes),
+			bm: 'elm://post'
 		});
 };
 var $author$project$HttpTask$update = F2(
@@ -5296,7 +5695,7 @@ var $author$project$HttpTask$update = F2(
 			case 0:
 				return _Utils_Tuple2(
 					model,
-					$author$project$HttpTask$post(model.M));
+					$author$project$HttpTask$post(model.aC));
 			case 1:
 				return _Utils_Tuple2(model, $author$project$HttpTask$get);
 			case 2:
@@ -5304,7 +5703,7 @@ var $author$project$HttpTask$update = F2(
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
-						{M: bytes}),
+						{aC: bytes}),
 					$author$project$Ports$receivedBytes(
 						$elm$bytes$Bytes$width(bytes)));
 			default:
@@ -5319,12 +5718,12 @@ var $author$project$Identity$update = F2(
 			return _Utils_Tuple2(
 				_Utils_update(
 					model,
-					{ap: value}),
+					{bn: value}),
 				$author$project$Ports$receivedBytes(0));
 		} else {
 			return _Utils_Tuple2(
 				model,
-				$author$project$Identity$identityToJS(model.ap));
+				$author$project$Identity$identityToJS(model.bn));
 		}
 	});
 var $elm$core$Elm$JsArray$foldl = _JsArray_foldl;
@@ -5477,14 +5876,181 @@ var $author$project$IntArrayPort$update = F2(
 			return _Utils_Tuple2(
 				_Utils_update(
 					model,
-					{M: bytes}),
+					{aC: bytes}),
 				$author$project$Ports$receivedBytes(
 					$elm$bytes$Bytes$width(bytes)));
 		} else {
 			return _Utils_Tuple2(
 				model,
 				$author$project$IntArrayPort$intArrayToJS(
-					$author$project$IntArrayPort$bytesEncoder(model.M)));
+					$author$project$IntArrayPort$bytesEncoder(model.aC)));
+		}
+	});
+var $elm$json$Json$Encode$list = F2(
+	function (func, entries) {
+		return _Json_wrap(
+			A3(
+				$elm$core$List$foldl,
+				_Json_addEntry(func),
+				_Json_emptyArray(0),
+				entries));
+	});
+var $author$project$IntListChunkingPort$listStep = function (_v0) {
+	var n = _v0.a;
+	var xs = _v0.b;
+	return (n >= 20) ? A6(
+		$elm$bytes$Bytes$Decode$map5,
+		F5(
+			function (b0, b1, b2, b3, rest) {
+				return $elm$bytes$Bytes$Decode$Loop(
+					_Utils_Tuple2(
+						n - 37,
+						A2(
+							$elm$core$List$cons,
+							4278190080 & b3,
+							A2(
+								$elm$core$List$cons,
+								16711680 & b3,
+								A2(
+									$elm$core$List$cons,
+									65280 & b3,
+									A2(
+										$elm$core$List$cons,
+										255 & b3,
+										A2(
+											$elm$core$List$cons,
+											4278190080 & b2,
+											A2(
+												$elm$core$List$cons,
+												16711680 & b2,
+												A2(
+													$elm$core$List$cons,
+													65280 & b2,
+													A2(
+														$elm$core$List$cons,
+														255 & b2,
+														A2(
+															$elm$core$List$cons,
+															4278190080 & b1,
+															A2(
+																$elm$core$List$cons,
+																16711680 & b1,
+																A2(
+																	$elm$core$List$cons,
+																	65280 & b1,
+																	A2(
+																		$elm$core$List$cons,
+																		255 & b1,
+																		A2(
+																			$elm$core$List$cons,
+																			4278190080 & b0,
+																			A2(
+																				$elm$core$List$cons,
+																				16711680 & b0,
+																				A2(
+																					$elm$core$List$cons,
+																					65280 & b0,
+																					A2($elm$core$List$cons, 255 & b0, xs))))))))))))))))));
+			}),
+		$elm$bytes$Bytes$Decode$unsignedInt32(1),
+		$elm$bytes$Bytes$Decode$unsignedInt32(1),
+		$elm$bytes$Bytes$Decode$unsignedInt32(1),
+		$elm$bytes$Bytes$Decode$unsignedInt32(1),
+		$elm$bytes$Bytes$Decode$unsignedInt32(1)) : ((n <= 0) ? $elm$bytes$Bytes$Decode$succeed(
+		$elm$bytes$Bytes$Decode$Done(
+			$elm$core$List$reverse(xs))) : A2(
+		$elm$bytes$Bytes$Decode$map,
+		function (x) {
+			return $elm$bytes$Bytes$Decode$Loop(
+				_Utils_Tuple2(
+					n - 1,
+					A2($elm$core$List$cons, x, xs)));
+		},
+		$elm$bytes$Bytes$Decode$unsignedInt8));
+};
+var $author$project$IntListChunkingPort$bytesEncoder = function (bytes) {
+	return A2(
+		$elm$json$Json$Encode$list,
+		$elm$json$Json$Encode$int,
+		A2(
+			$elm$core$Maybe$withDefault,
+			_List_Nil,
+			A2(
+				$elm$bytes$Bytes$Decode$decode,
+				A2(
+					$elm$bytes$Bytes$Decode$loop,
+					_Utils_Tuple2(
+						$elm$bytes$Bytes$width(bytes),
+						_List_Nil),
+					$author$project$IntListChunkingPort$listStep),
+				bytes)));
+};
+var $author$project$IntListChunkingPort$intListChunkingToJS = _Platform_outgoingPort('intListChunkingToJS', $elm$core$Basics$identity);
+var $author$project$IntListChunkingPort$update = F2(
+	function (msg, model) {
+		if (!msg.$) {
+			var bytes = msg.a;
+			return _Utils_Tuple2(
+				_Utils_update(
+					model,
+					{aC: bytes}),
+				$author$project$Ports$receivedBytes(
+					$elm$bytes$Bytes$width(bytes)));
+		} else {
+			return _Utils_Tuple2(
+				model,
+				$author$project$IntListChunkingPort$intListChunkingToJS(
+					$author$project$IntListChunkingPort$bytesEncoder(model.aC)));
+		}
+	});
+var $author$project$IntListPort$listStep = function (_v0) {
+	var n = _v0.a;
+	var xs = _v0.b;
+	return (n <= 0) ? $elm$bytes$Bytes$Decode$succeed(
+		$elm$bytes$Bytes$Decode$Done(
+			$elm$core$List$reverse(xs))) : A2(
+		$elm$bytes$Bytes$Decode$map,
+		function (x) {
+			return $elm$bytes$Bytes$Decode$Loop(
+				_Utils_Tuple2(
+					n - 1,
+					A2($elm$core$List$cons, x, xs)));
+		},
+		$elm$bytes$Bytes$Decode$unsignedInt8);
+};
+var $author$project$IntListPort$bytesEncoder = function (bytes) {
+	return A2(
+		$elm$json$Json$Encode$list,
+		$elm$json$Json$Encode$int,
+		A2(
+			$elm$core$Maybe$withDefault,
+			_List_Nil,
+			A2(
+				$elm$bytes$Bytes$Decode$decode,
+				A2(
+					$elm$bytes$Bytes$Decode$loop,
+					_Utils_Tuple2(
+						$elm$bytes$Bytes$width(bytes),
+						_List_Nil),
+					$author$project$IntListPort$listStep),
+				bytes)));
+};
+var $author$project$IntListPort$intListToJS = _Platform_outgoingPort('intListToJS', $elm$core$Basics$identity);
+var $author$project$IntListPort$update = F2(
+	function (msg, model) {
+		if (!msg.$) {
+			var bytes = msg.a;
+			return _Utils_Tuple2(
+				_Utils_update(
+					model,
+					{aC: bytes}),
+				$author$project$Ports$receivedBytes(
+					$elm$bytes$Bytes$width(bytes)));
+		} else {
+			return _Utils_Tuple2(
+				model,
+				$author$project$IntListPort$intListToJS(
+					$author$project$IntListPort$bytesEncoder(model.aC)));
 		}
 	});
 var $author$project$Main$update = F2(
@@ -5520,6 +6086,24 @@ var $author$project$Main$update = F2(
 				var smsg = msg.a;
 				return A2(
 					supdate,
+					$author$project$Main$IntListPortMsg,
+					A2($author$project$IntListPort$update, smsg, model));
+			case 4:
+				var smsg = msg.a;
+				return A2(
+					supdate,
+					$author$project$Main$IntListChunkingPortMsg,
+					A2($author$project$IntListChunkingPort$update, smsg, model));
+			case 6:
+				var smsg = msg.a;
+				return A2(
+					supdate,
+					$author$project$Main$HexPortMsg,
+					A2($author$project$HexPort$update, smsg, model));
+			case 5:
+				var smsg = msg.a;
+				return A2(
+					supdate,
 					$author$project$Main$Base64PortMsg,
 					A2($author$project$Base64Port$update, smsg, model));
 			default:
@@ -5533,11 +6117,11 @@ var $author$project$Main$update = F2(
 var $elm$core$Platform$worker = _Platform_worker;
 var $author$project$Main$main = $elm$core$Platform$worker(
 	{
-		aF: function (_v0) {
+		bR: function (_v0) {
 			return _Utils_Tuple2($author$project$Model$init, $elm$core$Platform$Cmd$none);
 		},
-		aQ: $author$project$Main$subscriptions,
-		aT: $author$project$Main$update
+		ci: $author$project$Main$subscriptions,
+		co: $author$project$Main$update
 	});
 _Platform_export({'Main':{'init':$author$project$Main$main(
 	$elm$json$Json$Decode$succeed(

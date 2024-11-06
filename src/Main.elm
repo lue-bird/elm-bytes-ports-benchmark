@@ -2,9 +2,12 @@ port module Main exposing (..)
 
 import Base64Port
 import FilePort
+import HexPort
 import HttpTask
 import Identity
 import IntArrayPort
+import IntListChunkingPort
+import IntListPort
 import Json.Encode
 import Model exposing (Model)
 
@@ -19,7 +22,10 @@ type Msg
     = IdentityMsg Identity.Msg
     | FilePortMsg FilePort.Msg
     | IntArrayPortMsg IntArrayPort.Msg
+    | IntListPortMsg IntListPort.Msg
+    | IntListChunkingPortMsg IntListChunkingPort.Msg
     | Base64PortMsg Base64Port.Msg
+    | HexPortMsg HexPort.Msg
     | HttpTaskMsg HttpTask.Msg
 
 
@@ -39,6 +45,15 @@ update msg model =
         IntArrayPortMsg smsg ->
             IntArrayPort.update smsg model |> supdate IntArrayPortMsg
 
+        IntListPortMsg smsg ->
+            IntListPort.update smsg model |> supdate IntListPortMsg
+
+        IntListChunkingPortMsg smsg ->
+            IntListChunkingPort.update smsg model |> supdate IntListChunkingPortMsg
+
+        HexPortMsg smsg ->
+            HexPort.update smsg model |> supdate HexPortMsg
+
         Base64PortMsg smsg ->
             Base64Port.update smsg model |> supdate Base64PortMsg
 
@@ -51,7 +66,10 @@ subscriptions model =
     Sub.batch
         [ Identity.subscriptions model |> Sub.map IdentityMsg
         , FilePort.subscriptions model |> Sub.map FilePortMsg
+        , IntListChunkingPort.subscriptions model |> Sub.map IntListChunkingPortMsg
+        , IntListPort.subscriptions model |> Sub.map IntListPortMsg
         , IntArrayPort.subscriptions model |> Sub.map IntArrayPortMsg
+        , HexPort.subscriptions model |> Sub.map HexPortMsg
         , Base64Port.subscriptions model |> Sub.map Base64PortMsg
         , HttpTask.subscriptions model |> Sub.map HttpTaskMsg
         ]

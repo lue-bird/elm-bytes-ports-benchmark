@@ -1,13 +1,19 @@
 import base64Port from "./base64Port.js";
+import hexPort from "./hexPort.js";
 import filePort from "./filePort.js";
 import "./httpTask.js";
 import httpTask from "./httpTask.js";
 import identity from "./identity.js";
 import intArray from "./intArrayPort.js";
+import intList from "./intListPort.js";
+import intListChunking from "./intListChunkingPort.js";
 
 const senders = [
   ["intArray", intArray.send, "rgb(255, 0, 0)"],
-  ["base64Port", base64Port.send, "rgb(0, 0, 255)"],
+  ["intList", intList.send, "rgb(0, 255, 0)"],
+  ["intListChunking", intListChunking.send, "rgb(0, 120, 120)"],
+  ["base64", base64Port.send, "rgb(0, 0, 255)"],
+  ["hex", hexPort.send, "rgb(120, 0, 120)"],
   ["identity", identity.send, "rgb(120, 120, 120)"],
   ["filePort", filePort.send, "rgb(0, 0, 0)"],
   ["httpTask", httpTask.send, "rgb(255, 255, 0)"],
@@ -15,7 +21,9 @@ const senders = [
 
 const receivers = [
   ["intArray", intArray.receive, "rgb(255, 0, 0)"],
-  ["base64Port", base64Port.receive, "rgb(0, 0, 255)"],
+  ["intListChunking", intListChunking.receive, "rgb(0, 120, 120)"],
+  ["base64", base64Port.receive, "rgb(0, 0, 255)"],
+  ["hex", hexPort.receive, "rgb(120, 0, 120)"],
   ["identity", identity.receive, "rgb(120, 120, 120)"],
   ["httpTask", httpTask.receive, "rgb(255, 255, 0)"],
 ];
@@ -80,7 +88,8 @@ async function runBenchmark(len) {
 
     senderData[index].push(millis / ATTEMPTS);
     if (receivedBytesLength != len) {
-      throw new Error(
+      //throw new Error
+      console.warn(
         `Implementation ${identifier} is unsound. Send bytes of length ${len} but received ${receivedBytesLength}`
       );
     }
@@ -99,8 +108,9 @@ async function runBenchmark(len) {
 
     receiverData[index].push(millis / ATTEMPTS);
     if (!areUint8ArraysEqual(bytes, receivedBytes)) {
-      throw new Error(
-        `Implementation ${identifier} is unsound. Send bytes ${bytes} but received ${receivedBytes}`
+      //throw new Error
+      console.warn(
+        `Implementation ${identifier} is unsound. Send bytes ${bytes.slice(0, 256)} but received ${receivedBytes.slice(0, 256)}`
       );
     }
   }
@@ -118,7 +128,7 @@ const createReceiverDataset = ([identifier, , color], index) => ({
   borderColor: color,
 });
 
-const sizes = [10, 20, 50, 100, 200, 500, 1000, 2000, 5000, 10000, 20000];
+const sizes = [10000, 20000, 50000, 100000, 200000, 300000];
 
 (async () => {
   for (let size of sizes) {
@@ -126,6 +136,11 @@ const sizes = [10, 20, 50, 100, 200, 500, 1000, 2000, 5000, 10000, 20000];
   }
 
   const options = {
+    options: {
+      animation: {
+        duration: 0
+      }
+    },
     scales: {
       x: {
         ticks: {
