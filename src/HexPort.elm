@@ -213,8 +213,8 @@ decoder width =
 loopHelp : { remaining : Int, string : String } -> Decode.Decoder (Decode.Step { remaining : Int, string : String } String)
 loopHelp { remaining, string } =
     if remaining >= 16 then
-        Decode.map4
-            (\a b c d ->
+        Decode.map5
+            (\a b c d e ->
                 Decode.Loop
                     { remaining = remaining - 16
                     , string =
@@ -223,8 +223,10 @@ loopHelp { remaining, string } =
                             ++ unsignedInt32ToHex b
                             ++ unsignedInt32ToHex c
                             ++ unsignedInt32ToHex d
+                            ++ unsignedInt32ToHex e
                     }
             )
+            decodeUnsignedInt32BE
             decodeUnsignedInt32BE
             decodeUnsignedInt32BE
             decodeUnsignedInt32BE
