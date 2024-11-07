@@ -73,13 +73,6 @@ encoder string =
         |> Encode.sequence
 
 
-{-| Big picture:
-
-  - read 4 base64 characters
-  - convert them to 3 bytes (24 bits)
-  - encode these bytes
-
--}
 encodeChunks : String -> List Encode.Encoder -> List Encode.Encoder
 encodeChunks input soFar =
     case String.toList (String.left 4 input) of
