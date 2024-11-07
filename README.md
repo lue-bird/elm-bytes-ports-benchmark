@@ -1,5 +1,9 @@
 # Elm <-> JS Bytes Interop Benchmark
 
+
+> This is a fork of https://github.com/anmolitor/elm-bytes-ports-benchmark
+> which adds more intermediate representation candidates.
+
 There are various usecases in which we want to pass Bytes directly from Javascript
 to the Elm application and vice versa. A concrete usecase I struggle with is Websockets with binary data (protobuf encoding).
 Unfortunately, Elm's primary interop mechanism, Ports, is based on JSON encoding and as such unable
@@ -7,12 +11,10 @@ to transfer Bytes (in the concrete form of Uint8Array, DataView or ArrayBuffer).
 
 The goal of this benchmark is to compare the different available workarounds.
 
-## Result
+## TL;DR:
 
-TL;DR: For transferring small amounts (< 5kb) of data at a time, a JSON compatible encoding
-such as Array (of numbers) or Base64 is fine. The difference between the two is negligible.
-For big amounts of data, use a HTTP prototype hack (more details below). The overhead of the HTTP method is
-remarkably low, so there is no benefit of implementing multiple methods and deciding which method to use depending on size.
+For transferring small to medium-sized amounts (< 3Mb) of data at a time, a JSON compatible encoding like [the ascii one](#ascii-1-char--1-byte) is fine.
+For big amounts of data, use [the HTTP prototype hack](#http-taskport). The overhead of the HTTP method is remarkably low, so there is no benefit of implementing multiple methods and deciding which method to use depending on size.
 
 ### JavaScript -> Elm
 
@@ -26,7 +28,7 @@ Note: "identity" measures overhead due to the method used for benchmarking by ju
 
 ## The contestants
 
-### Int Array
+### Int Array / Int List
 
 While Bytes cannot be directly represented in JSON,
 an array of numbers can. Thus we can copy each element of the `Uint8Array` to a standard JS array and revert the process on the Elm side via the `Bytes.Encode`/`Bytes.Decode` API.
@@ -35,7 +37,16 @@ This seems to perform reasonable well for small workloads but causes slowdown fo
 
 ### Base64
 
-Similar approach but more traditional in a sense, since bytes are often encoded as Base64 in the browser, for example in URLs. Seems to be very similar to the Int Array approach in speed. I would be interested to compare the memory usages between the two, but I was not sure how to best accomplish that. Suggestions/PRs welcome!
+Similar approach but more traditional in a sense, since bytes are often encoded as Base64 in the browser, for example in URLs. Faster than the Int Array approach. I would be interested to compare the memory usages between the two, but I was not sure how to best accomplish that. Suggestions/PRs welcome!
+
+### Hex (2 chars = 1 byte)
+
+Like Base64 but significantly faster for js → elm and a bit slower for elm → js (TODO why?)
+
+### "Ascii" (1 char = 1 byte)
+
+Like Base64 and Hex but faster than both of them.
+
 
 ### File API
 
