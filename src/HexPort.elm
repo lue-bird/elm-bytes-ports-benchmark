@@ -77,7 +77,7 @@ encodeChunks : String -> List Encode.Encoder -> List Encode.Encoder
 encodeChunks input soFar =
     case String.toList (String.slice 0 8 input) of
         [ a, b, c, d, e, f, g, h ] ->
-            encodeChunks (String.dropLeft 8 input)
+            encodeChunks (String.slice 8 (String.length input) input)
                 (Encode.unsignedInt32 Bytes.BE
                     (Bitwise.or
                         (Bitwise.or
@@ -105,7 +105,7 @@ encodeChunks input soFar =
                 )
 
         a :: b :: cUp ->
-            encodeChunks (String.dropLeft 2 input)
+            encodeChunks (String.slice 2 (String.length input) input)
                 (Encode.unsignedInt8
                     (Bitwise.or
                         (Bitwise.shiftLeftBy 4 (hexCharToInt a))
