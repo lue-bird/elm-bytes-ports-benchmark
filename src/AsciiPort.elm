@@ -68,16 +68,18 @@ toBytes string =
 
 encoder : String -> Encode.Encoder
 encoder string =
-    encodeChunks string []
+    encodeChunksFromIndex string (String.length string) []
         |> List.reverse
         |> Encode.sequence
 
 
-encodeChunks : String -> List Encode.Encoder -> List Encode.Encoder
-encodeChunks input soFar =
+encodeChunksFromIndex : String -> Int -> List Encode.Encoder -> List Encode.Encoder
+encodeChunksFromIndex input maximumInputLength soFar =
     case String.toList (String.slice 0 4 input) of
         [ a, b, c, d ] ->
-            encodeChunks (String.slice 4 (String.length input) input)
+            encodeChunksFromIndex
+                (String.slice 4 maximumInputLength input)
+                maximumInputLength
                 (Encode.unsignedInt32 Bytes.BE
                     (Bitwise.or
                         (Bitwise.or
@@ -93,7 +95,8 @@ encodeChunks input soFar =
                 )
 
         a :: bUp ->
-            encodeChunks (String.slice 1 (String.length input) input)
+            encodeChunksFromIndex (String.slice 1 maximumInputLength input)
+                maximumInputLength
                 (Encode.unsignedInt8
                     (asciiCharToInt a)
                     :: soFar
