@@ -75,7 +75,7 @@ encoder string =
 
 encodeChunks : String -> List Encode.Encoder -> List Encode.Encoder
 encodeChunks input soFar =
-    case String.toList (String.left 8 input) of
+    case String.toList (String.slice 0 8 input) of
         [ a, b, c, d, e, f, g, h ] ->
             encodeChunks (String.dropLeft 8 input)
                 (Encode.unsignedInt32 Bytes.BE
