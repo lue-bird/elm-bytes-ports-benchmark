@@ -6,6 +6,7 @@
   "scripts": {
     "start": "http-server dist",
     "build": "elm make src/Main.elm --optimize --output=dist/elm.js",
+    "build-optimize": "elm-optimize-level-2 src/Main.elm --optimize-speed --output=dist/elm.js",
     "build-debug": "elm make src/Main.elm --output=dist/elm.js"
   },
   "author": "Andreas Molitor",
